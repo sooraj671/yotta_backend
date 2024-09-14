@@ -51,7 +51,7 @@ const getProfile = async (req, res) => {
 
     return res.status(200).json({
       code: 200,
-      data: { /* user data */ }
+      data: user
     });
   } catch (error) {
     console.error("Error:", error.message);
