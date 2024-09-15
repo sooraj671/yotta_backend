@@ -90,13 +90,15 @@ const UserSchema = new mongoose.Schema({
   },
   preferredLocations: {
     type: [String],
-    default: [],
+    default: ['All locations'],
   },
   educationLevel: String,
   experiences: String,
   tutorCategory: String,
   race: String,
   gender: String,
+  profilePicUrl: String,  // Store Cloudinary URL
+  documentUrl: String,    // Store Cloudinary URL
 });
 
 const User = mongoose.model('User', UserSchema);
