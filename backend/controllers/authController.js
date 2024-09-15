@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const Tutor = require('../models/Tutor');
 const multer = require('multer');
 const cloudinary = require('../config/cloudinaryConfig'); // Assuming you have a cloudinary config file
 
@@ -11,42 +12,20 @@ const upload = multer({ storage });
 // Register new user
 const register = async (req, res) => {
   
-  const {
-    username, email, password, firstName, lastName, phoneNumber, parentLastName, parentEmail, postalCode, 
-    studentFirstName, studentLastName, studentGender, studentLevel, studentGrade, 
-    lessonsPerWeek, tuitionBudget, tutorGenderPreference, preferredStartDate, 
-    commitmentLength, termsAccepted, courses, expectations, timeSlots, dropDownData, educationDetails, 
+  const {userId, firstName, lastName, phoneNumber, postalCode, termsAccepted, courses, expectations, timeSlots, dropDownData, educationDetails, 
     specialNeeds, preferredLocations, educationLevel, experiences, tutorCategory, race, gender, profilePicUrl
   } = req.body;
 
   try {
-    let user = await User.findOne({ email });
-
-    if (user) {
-      return res.status(400).json({ message: 'User already exists' });
-    }
+    
 
     // Create new user object
-    user = new User({
-      username,
-      email,
-      password,
+    tutor = new Tutor({
+      userId,
       firstName,
       lastName,
       phoneNumber,
-      parentLastName,
-      parentEmail,
       postalCode,
-      studentFirstName,
-      studentLastName,
-      studentGender,
-      studentLevel,
-      studentGrade,
-      lessonsPerWeek,
-      tuitionBudget,
-      tutorGenderPreference,
-      preferredStartDate,
-      commitmentLength,
       termsAccepted,
       courses,
       expectations,
@@ -63,10 +42,7 @@ const register = async (req, res) => {
       profilePicUrl
     });
 
-    // Encrypt the password
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(password, salt);
-
+    
     
       // Upload profile picture to Cloudinary
       if (req.files && req.files['profilePhoto']) {
@@ -84,8 +60,8 @@ const register = async (req, res) => {
           uploadStream.end(req.files['profilePhoto'][0].buffer);
         });
   
-        user.profilePicUrl = profilePhotoUpload;
-        console.log('Profile Photo URL:', user.profilePicUrl);
+        tutor.profilePicUrl = profilePhotoUpload;
+        console.log('Profile Photo URL:', tutor.profilePicUrl);
       }
   
 
@@ -97,15 +73,14 @@ const register = async (req, res) => {
           if (error) {
             return res.status(500).json({ message: 'Error uploading document', error });
           }
-          user.documentUrl = result.secure_url;
+          tutor.documentUrl = result.secure_url;
         }
       );
       req.files['document'][0].buffer && result.end(req.files['document'][0].buffer);
     }
 
     // Save the user
-    console.log(user);
-    await user.save();
+    await tutor.save();
 
     res.status(201).json({ message: 'User registered successfully' });
   } catch (error) {
@@ -148,4 +123,44 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { register, login };
+
+// signup user
+const signup = async (req, res) => {
+  try {
+    const { username, email, password, role } = req.body;
+    // Check if all required fields are provided
+    if (!username || !email || !password) {
+      return res.status(400).json({ message: 'Provide all required fields.' });
+    }
+
+    // Check if the user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: 'User already exists.' });
+    }
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create a new user
+    const newUser = new User({
+      username,
+      email,
+      password: hashedPassword,
+      role,
+    });
+
+    // Save the user to the database
+    await newUser.save();
+
+    // Respond with success message
+    res.status(201).json({ message: 'User created successfully.', userId : newUser._id });
+  } catch (error) {
+    console.error('Error creating user:', error);
+    res.status(500).json({ message: 'Internal server error: '+error });
+  }
+
+};
+
+
+module.exports = { register, signup, login };
