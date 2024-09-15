@@ -7,12 +7,10 @@ const multer = require('multer');
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
-// Define fields for Multer middleware
-const multer = require('multer');
 
 
 // Use `upload.fields` to handle multiple file fields
-app.post('/api/auth/register', upload.fields([
+router.post('/register', upload.fields([
   { name: 'profilePhoto', maxCount: 1 },
   { name: 'uploadedDocuments', maxCount: 1 }
 ]), register);
@@ -20,3 +18,5 @@ app.post('/api/auth/register', upload.fields([
 router.post('/login', login);
 
 module.exports = router;
+
+

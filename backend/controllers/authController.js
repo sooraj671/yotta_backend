@@ -10,12 +10,13 @@ const upload = multer({ storage });
 
 // Register new user
 const register = async (req, res) => {
+  
   const {
     username, email, password, firstName, lastName, phoneNumber, parentLastName, parentEmail, postalCode, 
     studentFirstName, studentLastName, studentGender, studentLevel, studentGrade, 
     lessonsPerWeek, tuitionBudget, tutorGenderPreference, preferredStartDate, 
     commitmentLength, termsAccepted, courses, expectations, timeSlots, dropDownData, educationDetails, 
-    specialNeeds, preferredLocations, educationLevel, experiences, tutorCategory, race, gender
+    specialNeeds, preferredLocations, educationLevel, experiences, tutorCategory, race, gender, profilePicUrl
   } = req.body;
 
   try {
@@ -58,26 +59,35 @@ const register = async (req, res) => {
       experiences,
       tutorCategory,
       race,
-      gender
+      gender,
+      profilePicUrl
     });
 
     // Encrypt the password
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(password, salt);
 
-    // Upload profile picture to Cloudinary
-    if (req.files['profilePhoto']) {
-      const result = await cloudinary.uploader.upload_stream(
-        { folder: 'profile_pictures' },
-        (error, result) => {
-          if (error) {
-            return res.status(500).json({ message: 'Error uploading profile picture', error });
-          }
-          user.profilePicUrl = result.secure_url;
-        }
-      );
-      req.files['profilePhoto'][0].buffer && result.end(req.files['profilePhoto'][0].buffer);
-    }
+    
+      // Upload profile picture to Cloudinary
+      if (req.files && req.files['profilePhoto']) {
+        const profilePhotoUpload = await new Promise((resolve, reject) => {
+          const uploadStream = cloudinary.uploader.upload_stream(
+            { folder: 'profile_pictures' },
+            (error, result) => {
+              if (error) {
+                reject(error);
+              } else {
+                resolve(result.secure_url);
+              }
+            }
+          );
+          uploadStream.end(req.files['profilePhoto'][0].buffer);
+        });
+  
+        user.profilePicUrl = profilePhotoUpload;
+        console.log('Profile Photo URL:', user.profilePicUrl);
+      }
+  
 
     // Upload document to Cloudinary
     if (req.files['document']) {
@@ -94,6 +104,7 @@ const register = async (req, res) => {
     }
 
     // Save the user
+    console.log(user);
     await user.save();
 
     res.status(201).json({ message: 'User registered successfully' });

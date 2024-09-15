@@ -77,8 +77,7 @@ const UserSchema = new mongoose.Schema({
     default: [],
   },
   specialNeeds: {
-    type: Map,
-    of: Boolean,
+    type: Array,
     default: {
       dyslexia: false,
       autism: false,
