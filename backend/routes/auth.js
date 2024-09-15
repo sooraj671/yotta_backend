@@ -12,7 +12,7 @@ const upload = multer({ storage });
 // Use `upload.fields` to handle multiple file fields
 router.post('/register', upload.fields([
   { name: 'profilePhoto', maxCount: 1 },
-  { name: 'uploadedDocuments', maxCount: 1 }
+  { name: 'document', maxCount: 1 }
 ]), register);
 
 router.post('/login', login);

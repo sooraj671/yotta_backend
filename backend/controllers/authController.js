@@ -13,9 +13,10 @@ const upload = multer({ storage });
 const register = async (req, res) => {
   
   const {userId, firstName, lastName, phoneNumber, postalCode, termsAccepted, courses, expectations, timeSlots, dropDownData, educationDetails, 
-    specialNeeds, preferredLocations, educationLevel, experiences, tutorCategory, race, gender, profilePicUrl
+    specialNeeds, preferredLocations, educationLevel, experiences, tutorCategory, race, gender, profilePicUrl,documentUrl
   } = req.body;
 
+  console.log(req.files)
   try {
     
 
@@ -39,7 +40,8 @@ const register = async (req, res) => {
       tutorCategory,
       race,
       gender,
-      profilePicUrl
+      profilePicUrl,
+      documentUrl
     });
 
     
@@ -63,21 +65,27 @@ const register = async (req, res) => {
         tutor.profilePicUrl = profilePhotoUpload;
         console.log('Profile Photo URL:', tutor.profilePicUrl);
       }
-  
 
-    // Upload document to Cloudinary
-    if (req.files['document']) {
-      const result = await cloudinary.uploader.upload_stream(
-        { folder: 'documents' },
-        (error, result) => {
-          if (error) {
-            return res.status(500).json({ message: 'Error uploading document', error });
-          }
-          tutor.documentUrl = result.secure_url;
-        }
-      );
-      req.files['document'][0].buffer && result.end(req.files['document'][0].buffer);
-    }
+      // Upload profile picture to Cloudinary
+      if (req.files && req.files['document']) {
+        const documentUpload = await new Promise((resolve, reject) => {
+          const uploadStream = cloudinary.uploader.upload_stream(
+            { folder: 'documents' },
+            (error, result) => {
+              if (error) {
+                reject(error);
+              } else {
+                resolve(result.secure_url);
+              }
+            }
+          );
+          uploadStream.end(req.files['document'][0].buffer);
+        });
+  
+        tutor.documentUrl = documentUpload;
+        console.log('Document  URL:', documentUpload);
+      }
+  
 
     // Save the user
     await tutor.save();

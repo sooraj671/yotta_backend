@@ -27,5 +27,17 @@ const getProfile = async (req, res) => {
   }
 };
 
+const getAllProfiles = async (req, res) => {
+  try {
+    const tutors = await Tutor.find().select('-password'); // Fetch all tutors excluding passwords
+    return res.status(200).json({
+      code: 200,
+      data: tutors,
+    });
+  } catch (error) {
+    console.error('Error fetching profiles:', error.message);
+    return res.status(500).json({ code: 500, message: 'Server error' });
+  }
+};
 
-module.exports = { getProfile };
+module.exports = { getProfile, getAllProfiles };
