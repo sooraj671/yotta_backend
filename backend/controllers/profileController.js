@@ -40,4 +40,24 @@ const getAllProfiles = async (req, res) => {
   }
 };
 
-module.exports = { getProfile, getAllProfiles };
+// Get a profile by ID
+const getProfileById = async (req, res) => {
+  const profileId = req.params.id;
+
+  try {
+    const profile = await Tutor.findById(profileId).select('-password'); // Fetch the profile by ID
+    if (!profile) {
+      return res.status(404).json({ code: 404, message: 'Profile not found' });
+    }
+
+    return res.status(200).json({
+      code: 200,
+      data: profile
+    });
+  } catch (error) {
+    console.error('Error fetching profile by ID:', error.message);
+    return res.status(500).json({ code: 500, message: 'Server error' });
+  }
+};
+
+module.exports = { getProfile, getAllProfiles, getProfileById };
