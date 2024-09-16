@@ -90,7 +90,14 @@ const register = async (req, res) => {
   
 
     // Save the user
-    await tutor.save();
+    console.log('tutor: ', tutor)
+    try {
+      await tutor.save();
+    } catch (error) {
+      console.error('Error saving tutor:', error.message);
+      res.status(500).send('Server error');
+    }
+    
 
     res.status(201).json({ message: 'User registered successfully' });
   } catch (error) {
