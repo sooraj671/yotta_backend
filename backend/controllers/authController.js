@@ -13,7 +13,8 @@ const upload = multer({ storage });
 const register = async (req, res) => {
   
   const {userId, firstName, lastName, phoneNumber, postalCode, termsAccepted, courses, expectations, timeSlots, dropDownData, educationDetails, 
-    specialNeeds, preferredLocations, educationLevel, experiences, tutorCategory, race, gender, profilePicUrl,documentUrl
+    specialNeeds, preferredLocations, educationLevel, experiences, tutorCategory, race, gender, profilePicUrl, documentUrl,
+    levels
   } = req.body;
 
   console.log(req.files)
@@ -41,7 +42,8 @@ const register = async (req, res) => {
       race,
       gender,
       profilePicUrl,
-      documentUrl
+      documentUrl,
+      levels
     });
 
     

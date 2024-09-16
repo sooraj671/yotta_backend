@@ -134,6 +134,19 @@ const TutorSchema = new mongoose.Schema({
     type: [String],
     default: ['All locations'],
   },
+
+  levels: {
+    type: [
+      {
+        name: { type: String, required: true }, // e.g., 'Primary', 'Lower Secondary', etc.
+        subjects: { type: [String], default: [] },
+        rate: { type: String, default: '10' }
+      }
+    ],
+    default: [],
+  }
+
+
   
 },{ collection: 'Tutors' });
 
