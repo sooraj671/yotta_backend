@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { register, signup, login } = require('../controllers/authController');
+const { register, signup, login, verifyToken } = require('../controllers/authController');
 const multer = require('multer');
 
 // Multer setup (memory storage for Cloudinary uploads)
@@ -17,6 +17,7 @@ router.post('/register', upload.fields([
 
 router.post('/login', login);
 router.post('/signup', signup);
+router.get('/verify-token', verifyToken);
 
 module.exports = router;
 

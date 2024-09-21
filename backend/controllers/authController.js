@@ -180,4 +180,19 @@ const signup = async (req, res) => {
 };
 
 
-module.exports = { register, signup, login };
+const verifyToken = async (req, res) => {
+  const token = req.headers.authorization?.split(' ')[1];
+  if (!token) {
+    return res.status(401).json({ message: 'No token provided' });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    res.json({ valid: true, userId: decoded.id });
+  } catch (error) {
+    res.status(401).json({ message: 'Invalid token' });
+  }
+};
+
+
+module.exports = { register, signup, login, verifyToken };
