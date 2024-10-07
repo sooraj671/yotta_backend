@@ -17,10 +17,7 @@ const register = async (req, res) => {
     levels
   } = req.body;
 
-  console.log(req.files)
   try {
-    
-
     // Create new user object
     tutor = new Tutor({
       userId,
@@ -87,8 +84,6 @@ const register = async (req, res) => {
         tutor.documentUrl = documentUpload;
         console.log('Document  URL:', documentUpload);
       }
-  
-
     // Save the user
     console.log('tutor: ', tutor)
     try {
@@ -97,8 +92,6 @@ const register = async (req, res) => {
       console.error('Error saving tutor:', error.message);
       res.status(500).send('Server error');
     }
-    
-
     res.status(201).json({ message: 'User registered successfully' });
   } catch (error) {
     console.error(error.message);

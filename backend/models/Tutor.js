@@ -18,6 +18,11 @@ const TutorSchema = new mongoose.Schema({
     required: true,
   },
 
+  dateOfBirth: {
+    type: String,
+    required: true,
+  },
+
   phoneNumber: {
     type: String,
     required: true,

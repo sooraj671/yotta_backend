@@ -1,43 +1,73 @@
 const mongoose = require('mongoose');
 
 const StudentSchema = new mongoose.Schema({
-  username: {
-    type: String,
+  
+  userId: {
     unique: true,
-  },
-  email: {
-    type: String,
-    unique: true,
-  },
-  password: {
     type: String,
     required: true,
   },
-  firstName: String,
-  lastName: String,
-  phoneNumber: String,
-  postalCode: String,
-  parentLastName: String,
-  parentEmail: String,
-  studentFirstName: String,
-  studentLastName: String,
-  studentGender: String,
-  studentLevel: String,
-  studentGrade: String,
-  lessonsPerWeek: String,
-  tuitionBudget: String,
-  tutorGenderPreference: String,
-  preferredStartDate: String,
-  commitmentLength: String,
-  termsAccepted: {
-    type: Boolean,
-    default: false,
+  
+  studentFirstName: {
+    type: String,
+    required: true,
   },
-  courses: {
+
+  studentLastName: {
+    type: String,
+    required: true,
+  },
+
+  gender: {
+    type: String,
+    required: true,
+  },
+
+  postalCode: {
+    type: String,
+    required: true,
+  },
+
+  studentLevel: {
+    type: String,
+    required: true,
+  },
+
+  grade: {
+    type: String,
+    required: true,
+  },
+
+  selectedCourses: {
     type: [String],
     default: [],
   },
-  expectations: String,
+  
+  lessonFrequency: {
+    type: String,
+    required: true,
+  },
+
+  tutionBudget: {
+    type: String,
+    required: true,
+  },
+
+  tutorGenderPreference: {
+    type: Boolean,
+    default: false,
+  },
+
+  preferredStartDate: {
+    type: String,
+    default: '',
+  },
+
+  commitmentLength: {
+    type: String,
+    required: true,
+  },
+   
   timeSlots: {
     Monday: {
       type: [Number],
@@ -68,38 +98,17 @@ const StudentSchema = new mongoose.Schema({
       default: [],
     },
   },
-  dropDownData: {
-    type: Array,
-    default: [],
+
+  expectationsAndNeeds: {
+    type: String,
+    required: true,
   },
-  educationDetails: {
-    type: Array,
-    default: [],
-  },
-  specialNeeds: {
-    type: Array,
-    default: {
-      dyslexia: false,
-      autism: false,
-      adhd: false,
-      angerManagement: false,
-      slowLearner: false,
-      downSyndrome: false,
-    },
-  },
-  preferredLocations: {
-    type: [String],
-    default: ['All locations'],
-  },
-  educationLevel: String,
-  experiences: String,
-  tutorCategory: String,
-  race: String,
-  gender: String,
-  profilePicUrl: String,  // Store Cloudinary URL
-  documentUrl: String,    // Store Cloudinary URL
-});
+   
+
+  
+},{ collection: 'Students' });
 
 const Student = mongoose.model('Students', StudentSchema);
 
 module.exports = Student;
+
