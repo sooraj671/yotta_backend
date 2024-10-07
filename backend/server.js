@@ -5,7 +5,7 @@ require('dotenv').config();
 const Parent = require('./models/Parent'); 
 const Student = require('./models/Student');  
 const documentRoutes = require('./routes/documents');
-
+const questionRoutes = require('./routes/questions');
 
 const app = express();
 
@@ -24,6 +24,8 @@ app.use('/api/profile', require('./routes/profile'));
 
 // Use the routes
 app.use('/api', documentRoutes);
+app.use('/questions', questionRoutes);
+
 
 
 const PORT = process.env.PORT || 5000;
