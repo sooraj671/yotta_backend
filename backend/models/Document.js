@@ -12,11 +12,6 @@ const DocumentSchema = new Schema({
     type: String,
     required: true, // A descriptive title for the document
   },
-  uploadedBy: {
-    type: Schema.Types.ObjectId,
-    ref: 'User', // Assuming you have a User model (e.g., tutors uploading the document)
-    required: true,
-  },
   uploadedAt: {
     type: Date,
     default: Date.now, // Timestamp for when the document was uploaded

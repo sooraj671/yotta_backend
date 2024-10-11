@@ -2,30 +2,45 @@ const Document = require('../models/Document');
 const cloudinary = require('../config/cloudinaryConfig'); // Assuming you have a cloudinary config file
 const multer = require('multer');
 
+
 const uploadDocument = async (req, res) => {
-    var documentUrl = "";
-    if (req.files && req.files['document']) {
-        const documentUpload = await new Promise((resolve, reject) => {
-          const uploadStream = cloudinary.uploader.upload_stream(
-            { folder: 'documents' },
-            (error, result) => {
-              if (error) {
-                reject(error);
-              } else {
-                resolve(result.secure_url);
-              }
-            }
-          );
-          uploadStream.end(req.files['document'][0].buffer);
-        });
-        documentUrl = documentUpload;
-        console.log('Document URL:', documentUpload);
-    }
+  try {
+      let documentUrl = "";
+      let documentName = "";
 
-    const document = new Document({ documentUrl: documentUrl, title: 'Document 1000', uploadedBy: '609d2f77bcf86cd799439011' });
-    await document.save();
+      if (req.files && req.files['document']) {
+          documentName = req.files['document'][0].originalname;
+          const documentUpload = await new Promise((resolve, reject) => {
+              const uploadStream = cloudinary.uploader.upload_stream(
+                  { folder: 'documents' },
+                  (error, result) => {
+                      if (error) {
+                          reject(error);
+                      } else {
+                          resolve(result.secure_url);
+                      }
+                  }
+              );
+              uploadStream.end(req.files['document'][0].buffer);
+          });
 
-    res.status(201).json({ message: 'Document Uploaded successfully' });   
+          documentUrl = documentUpload;
+          console.log('Document URL:', documentUpload);
+      }
+
+      const document = new Document({
+          documentUrl: documentUrl,
+          title: documentName
+      });
+
+      await document.save();
+      res.status(201).json({ message: 'Document Uploaded successfully' });
+      
+  } catch (error) {
+      console.error('Error uploading document:', error);
+      res.status(500).json({ message: 'Error uploading document', error: error.message });
+  }
 };
+
   
 module.exports = { uploadDocument };
