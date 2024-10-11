@@ -20,7 +20,7 @@ const TutorSchema = new mongoose.Schema({
 
   dateOfBirth: {
     type: String,
-    required: true,
+    required: false,
   },
 
   phoneNumber: {
@@ -30,7 +30,7 @@ const TutorSchema = new mongoose.Schema({
 
   postalCode: {
     type: String,
-    required: true,
+    required: false,
   },
 
   termsAccepted: {
@@ -50,32 +50,32 @@ const TutorSchema = new mongoose.Schema({
 
   educationLevel: {
     type: String,
-    required: true,
+    required: false,
   },
 
   experiences: {
     type: String,
-    required: true,
+    required: false,
   },
 
   tutorCategory: {
     type: String,
-    required: true,
+    required: false,
   },
 
   race: {
     type: String,
-    required: true,
+    required: false,
   },
 
   gender: {
     type: String,
-    required: true,
+    required: false,
   },
 
   profilePicUrl: {
     type: String,
-    required: true,
+    required: false,
   },
 
   documentUrl: {

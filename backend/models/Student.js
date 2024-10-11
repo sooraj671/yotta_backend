@@ -59,7 +59,7 @@ const StudentSchema = new mongoose.Schema({
   },
 
   preferredStartDate: {
-    type: String,
+    type: Date,
     default: '',
   },
 
