@@ -1,35 +1,40 @@
 const express = require('express');
-const connectDB = require('./config/db');
-const cors = require('cors');
-require('dotenv').config();
-const Parent = require('./models/Parent'); 
-const Student = require('./models/Student');  
-const documentRoutes = require('./routes/documents');
-const questionRoutes = require('./routes/questions');
+const session = require('express-session');
+const passport = require('passport');
+const authController = require('./controllers/authController');
+
+// Import Passport configuration
+require('./config/passport');
 
 const app = express();
 
-// Connect Database
-connectDB();
+// Session middleware
+app.use(session({
+  secret: 'your_secret_key',
+  resave: false,
+  saveUninitialized: true,
+}));
 
-// Init Middleware
-app.use(cors());
-app.use(express.json({ extended: false }));
+// Initialize Passport and sessions
+app.use(passport.initialize());
+app.use(passport.session());
 
-// Define Routes
-app.use('/api/auth', require('./routes/auth'));
-app.use('/api/profile', require('./routes/profile'));
+// Routes
+app.get('/', (req, res) => {
+  res.send('Welcome to the Google Sign-In API!');
+});
 
-// Import the routes
+// Route to trigger Google Authentication using the controller
+app.get('/auth/google', authController.googleAuth);
 
-// Use the routes
-app.use('/api', documentRoutes);
-app.use('/questions', questionRoutes);
+// Google Callback route
+app.get('/auth/google/callback', 
+  authController.googleCallback, 
+  authController.googleCallbackSuccess
+);
 
-
-
-const PORT = process.env.PORT || 5000;
-
-app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
-
- 
+// Server listening
+const PORT =  3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
