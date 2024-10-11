@@ -188,4 +188,31 @@ const verifyToken = async (req, res) => {
 };
 
 
-module.exports = { register, signup, login, verifyToken };
+// controllers/authController.js
+const passport = require('passport');
+// Controller function to handle Google Sign-In authentication
+const googleAuth = passport.authenticate('google', { scope: ['profile', 'email'] });
+
+// Controller function to handle Google Sign-In callback
+const googleCallback = passport.authenticate('google', { failureRedirect: '/login' });
+
+// Controller function to handle the successful login response
+const googleCallbackSuccess = (req, res) => {
+  // Successful authentication, respond with user data
+  res.json({
+    message: 'Google sign-in successful!',
+    user: req.user,
+  });
+};
+
+// Other controllers like register, signup, login, verifyToken...
+
+module.exports = {
+  register,
+  signup,
+  login,
+  verifyToken,
+  googleAuth,
+  googleCallback,
+  googleCallbackSuccess,
+};
