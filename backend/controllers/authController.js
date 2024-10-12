@@ -11,6 +11,17 @@ const upload = multer({ storage });
 
 // Register new user
 const register = async (req, res) => {
+
+  //TODO
+
+  // const tutorData = req.body;
+    
+  // // Create a new student
+  // const newTutor = new Tutor(tutorData);
+  
+  // // Save the student in the database
+  // const savedStudent = await newStudent.save();
+
   
   const {userId, firstName, lastName, phoneNumber, postalCode, termsAccepted, expectations, timeSlots, dropDownData, educationDetails, 
     specialNeeds, preferredLocations, educationLevel, experiences, tutorCategory, race, gender, profilePicUrl, documentUrl
@@ -198,12 +209,35 @@ const googleCallback = passport.authenticate('google', { failureRedirect: '/logi
 
 // Controller function to handle the successful login response
 const googleCallbackSuccess = (req, res) => {
-  // Successful authentication, respond with user data
+  // After successful authentication, send back a token and user data in the response
+  const user = req.user; // req.user will have the authenticated user info
+
+  // Generate a JWT token using the user's ID
+  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '24h' });
+
+  // Log the response being sent
+  console.log("Google Sign-Up Successful. Sending response:", {
+    success: true,
+    token,
+    user: {
+      id: user._id,
+      email: user.email,
+      username: user.username,
+    },
+  });
+
+  // Send a JSON response with the token and user info
   res.json({
-    message: 'Google sign-in successful!',
-    user: req.user,
+    success: true,
+    token,
+    user: {
+      id: user._id,
+      email: user.email,
+      username: user.username,
+    },
   });
 };
+
 
 // Other controllers like register, signup, login, verifyToken...
 

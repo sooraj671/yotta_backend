@@ -6,7 +6,7 @@ require('dotenv').config(); // Load environment variables from .env
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,  // Use environment variable for Client ID
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,  // Use environment variable for Client Secret
-    callbackURL: 'http://localhost:3000/auth/google/callback'
+    callbackURL: 'http://localhost:5000/auth/google/callback'
   },
   (accessToken, refreshToken, profile, done) => {
 
