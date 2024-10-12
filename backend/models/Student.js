@@ -5,37 +5,37 @@ const StudentSchema = new mongoose.Schema({
   userId: {
     unique: true,
     type: String,
-    required: true,
+    required: false,
   },
   
   studentFirstName: {
     type: String,
-    required: true,
+    required: false,
   },
 
   studentLastName: {
     type: String,
-    required: true,
+    required: false,
   },
 
   gender: {
     type: String,
-    required: true,
+    required: false,
   },
 
   postalCode: {
     type: String,
-    required: true,
+    required: false,
   },
 
   studentLevel: {
     type: String,
-    required: true,
+    required: false,
   },
 
   grade: {
     type: String,
-    required: true,
+    required: false,
   },
 
   selectedCourses: {
@@ -45,27 +45,27 @@ const StudentSchema = new mongoose.Schema({
   
   lessonFrequency: {
     type: String,
-    required: true,
+    required: false,
   },
 
   tutionBudget: {
     type: String,
-    required: true,
+    required: false,
   },
 
   tutorGenderPreference: {
-    type: Boolean,
+    type: String,
     default: false,
   },
 
   preferredStartDate: {
     type: Date,
-    default: '',
+    default: null,
   },
 
   commitmentLength: {
     type: String,
-    required: true,
+    required: false,
   },
    
   timeSlots: {
@@ -99,9 +99,9 @@ const StudentSchema = new mongoose.Schema({
     },
   },
 
-  expectationsAndNeeds: {
+  expectations: {
     type: String,
-    required: true,
+    required: false,
   },
    
 

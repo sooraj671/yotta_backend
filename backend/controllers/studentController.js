@@ -3,10 +3,20 @@ const Student = require('../models/Student');
 
 exports.registerStudent = async (req, res) => {
   try {
-    const studentData = req.body;
+    
+    const {userId, studentFirstName, studentLastName,
+        postalCode, expectations,  gender, grade, 
+        preferredStartDate, selectedCourses, studentLevel,
+         tutionBudget, tutorGenderPreference, commitmentLength, lessonFrequency
+      } = req.body;
+    //const studentData = req.body;
     
     // Create a new student
-    const newStudent = new Student(studentData);
+    const newStudent = new Student({userId, studentFirstName, studentLastName,
+      postalCode, expectations,  gender, grade, 
+      preferredStartDate, selectedCourses, studentLevel,
+       tutionBudget, tutorGenderPreference, commitmentLength,lessonFrequency
+    });
     
     // Save the student in the database
     const savedStudent = await newStudent.save();
