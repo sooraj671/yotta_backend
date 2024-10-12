@@ -2,10 +2,9 @@ const express = require('express');
 const connectDB = require('./config/db');
 const cors = require('cors');
 require('dotenv').config();
-const Parent = require('./models/Parent'); 
-const Student = require('./models/Student');  
 const documentRoutes = require('./routes/documents');
 const questionRoutes = require('./routes/questions');
+const studentRoutes = require('./routes/studentRoutes');
 const session = require('express-session');
 
 const authController = require('./controllers/authController');
@@ -25,6 +24,7 @@ app.use(express.json({ extended: false }));
 // Define Routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/profile', require('./routes/profile'));
+app.use('/api/students', studentRoutes);
 
 // Import the routes
 

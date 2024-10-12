@@ -38,10 +38,10 @@ const TutorSchema = new mongoose.Schema({
     default: false,
   },
 
-  courses: {
-    type: [String],
-    default: [],
-  },
+  // courses: {
+  //   type: [String],
+  //   default: [],
+  // },
 
   expectations: {
     type: String,

@@ -12,9 +12,8 @@ const upload = multer({ storage });
 // Register new user
 const register = async (req, res) => {
   
-  const {userId, firstName, lastName, phoneNumber, postalCode, termsAccepted, courses, expectations, timeSlots, dropDownData, educationDetails, 
-    specialNeeds, preferredLocations, educationLevel, experiences, tutorCategory, race, gender, profilePicUrl, documentUrl,
-    levels
+  const {userId, firstName, lastName, phoneNumber, postalCode, termsAccepted, expectations, timeSlots, dropDownData, educationDetails, 
+    specialNeeds, preferredLocations, educationLevel, experiences, tutorCategory, race, gender, profilePicUrl, documentUrl
   } = req.body;
 
   try {
@@ -26,7 +25,7 @@ const register = async (req, res) => {
       phoneNumber,
       postalCode,
       termsAccepted,
-      courses,
+      // courses,
       expectations,
       timeSlots,
       dropDownData,
@@ -40,7 +39,7 @@ const register = async (req, res) => {
       gender,
       profilePicUrl,
       documentUrl,
-      levels
+      // levels
     });
 
     
@@ -88,6 +87,7 @@ const register = async (req, res) => {
     console.log('tutor: ', tutor)
     try {
       await tutor.save();
+      console.log("User Registered.");
     } catch (error) {
       console.error('Error saving tutor:', error.message);
       res.status(500).send('Server error');
