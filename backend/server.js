@@ -24,7 +24,7 @@ app.use(express.json({ extended: false }));
 // Define Routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/profile', require('./routes/profile'));
-app.use('/api/students', studentRoutes);
+app.use('/api/auth/students', require('./routes/studentRoutes'));
 
 // Import the routes
 
